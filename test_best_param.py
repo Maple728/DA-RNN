@@ -1,9 +1,8 @@
 import tensorflow as tf
 
-from DA_RNN import DARNN
-from get_data import *
-from config import *
-
+from configs.config import *
+from preprocess.get_data import *
+from models.DA_RNN import *
 
 # --------------------- Setting -----------------
 RMSE_STOP_THRESHOLD = 0.00005

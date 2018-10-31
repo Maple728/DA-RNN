@@ -1,11 +1,11 @@
 import numpy as np
 
-from config import *
-from get_data import *
-from DA_RNN import *
+from configs.config import *
+from preprocess.get_data import *
+from models.DA_RNN import *
 
 
-MODEL_PATH = './models/daTaxiNYConfig_rnn.ckpt'
+MODEL_PATH = './checkpoints/TaxiNYConfig_rnn.ckpt'
 is_train = True
 RMSE_STOP_THRESHOLD = 0.0001
 

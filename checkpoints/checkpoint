@@ -1,0 +1,2 @@
+model_checkpoint_path: "daTaxiNYConfig_rnn.ckpt"
+all_model_checkpoint_paths: "daTaxiNYConfig_rnn.ckpt"
