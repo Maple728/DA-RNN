@@ -1,17 +1,19 @@
 import numpy as np
+from functools import reduce
+from operator import mul
 
 from configs.config import *
 from preprocess.get_data import *
 from models.DA_RNN import *
 
-
-MODEL_PATH = './checkpoints/TaxiNYConfig_rnn.ckpt'
+MODEL_PATH = './checkpoints/taxi5_da_rnn.ckpt'
 is_train = True
-RMSE_STOP_THRESHOLD = 0.0001
-
+RMSE_STOP_THRESHOLD = 0.00003
 
 # --------------------- Data Process -----------------------
+# TaxiNYConfig, NasdaqConfig
 config = TaxiNYConfig
+# TaxiNYDataset, NasdaqDataset
 ds_handler = TaxiNYDataset(config)
 
 dataset = ds_handler.get_dataset()
@@ -23,9 +25,16 @@ model = DARNN(config)
 sess = tf.Session()
 saver = tf.train.Saver()
 
+def get_num_params():
+    num_params = 0
+    for variable in tf.trainable_variables():
+        shape = variable.get_shape()
+        num_params += reduce(mul, [dim.value for dim in shape], 1)
+    return num_params
+
 if is_train:
     sess.run(tf.global_variables_initializer())
-    
+    print('Trainable parameter count:', get_num_params())
     last_rmse = 100.0
     best_valid_rmse = 100.0
     for i in range(1000):

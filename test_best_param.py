@@ -5,11 +5,11 @@ from preprocess.get_data import *
 from models.DA_RNN import *
 
 # --------------------- Setting -----------------
-RMSE_STOP_THRESHOLD = 0.00005
+RMSE_STOP_THRESHOLD = 0.0001
 # TaxiNYDataset, NasdaqDataset
-DATASET_CLASS = TaxiNYDataset
+DATASET_CLASS = NasdaqDataset
 # TaxiNYConfig, NasdaqConfig
-config = TaxiNYConfig
+config = NasdaqConfig
 
 
 def train_config(config):
@@ -54,7 +54,7 @@ def train_config(config):
 train_results = []
 for hidden_sizes in [ [64], [128], [256]]:
     config.hidden_sizes = hidden_sizes
-    for timestep in [6, 12, 24]:
+    for timestep in [6, 10, 12]:
         config.timestep = timestep
         
         print('!!!Train config, hidden sizes:', hidden_sizes, 'timestep:', timestep)

@@ -38,23 +38,18 @@ class DARNN():
             X_encodeds = []
 
             # attention layer
-            ''' !!! w, e are reused '''
-##            en_w_e = tf.Variable(tf.truncated_normal(shape = [2 * last_hidden_size, config.timestep]), dtype = tf.float32)
-##            en_u_e = tf.Variable(tf.truncated_normal(shape = [config.timestep * config.input_size, config.timestep]), dtype = tf.float32)
-##            en_v_e = tf.Variable(tf.truncated_normal(shape = [config.timestep, 1]))
+            en_w_e = tf.Variable(tf.truncated_normal(shape=[2 * last_hidden_size, config.timestep]), dtype=tf.float32)
+            en_u_e = tf.Variable(tf.truncated_normal(shape=[config.timestep * config.input_size, config.timestep]),
+                                 dtype=tf.float32)
+            en_v_e = tf.Variable(tf.truncated_normal(shape=[config.timestep, 1]))
 
             # LSTM run by step
             for t in range(config.timestep):
-                
-                en_w_e = tf.Variable(tf.truncated_normal(shape = [2 * last_hidden_size, config.timestep]), dtype = tf.float32)
-                en_u_e = tf.Variable(tf.truncated_normal(shape = [config.timestep * config.input_size, config.timestep]), dtype = tf.float32)
-                en_v_e = tf.Variable(tf.truncated_normal(shape = [config.timestep, 1]))
-                
+
                 # batch_size * 2m
                 h_s_concat = tf.concat([encoder_s_state[-1].h, encoder_s_state[-1].c], axis = 1)
 
                 hs_part = tf.matmul(h_s_concat, en_w_e)
-                
 
                 # n * <batch_size, 1>
                 e_ks = []
@@ -96,21 +91,15 @@ class DARNN():
             last_hidden_size = config.hidden_sizes[-1]
 
             # attention layer
-            ''' !!! w, e are reused '''
-##            de_w_e = tf.Variable(tf.truncated_normal(shape = [2 * last_hidden_size, last_hidden_size]), dtype = tf.float32)
-##            de_u_e = tf.Variable(tf.truncated_normal(shape = [last_hidden_size, last_hidden_size]), dtype = tf.float32)
-##            de_v_e = tf.Variable(tf.truncated_normal(shape = [last_hidden_size, 1]))
+            de_w_e = tf.Variable(tf.truncated_normal(shape=[2 * last_hidden_size, last_hidden_size]), dtype=tf.float32)
+            de_u_e = tf.Variable(tf.truncated_normal(shape=[last_hidden_size, last_hidden_size]), dtype=tf.float32)
+            de_v_e = tf.Variable(tf.truncated_normal(shape=[last_hidden_size, 1]))
 
             de_w_tilde = tf.Variable(tf.truncated_normal(shape = [last_hidden_size + 1, 1]), dtype = tf.float32)
             de_b_tilde = tf.Variable(tf.constant(0.0, shape = [1], dtype = tf.float32))
 
             # lstm run by step
             for t in range(config.timestep):
-                
-                de_w_e = tf.Variable(tf.truncated_normal(shape = [2 * last_hidden_size, last_hidden_size]), dtype = tf.float32)
-                de_u_e = tf.Variable(tf.truncated_normal(shape = [last_hidden_size, last_hidden_size]), dtype = tf.float32)
-                de_v_e = tf.Variable(tf.truncated_normal(shape = [last_hidden_size, 1]))
-
                 
                 # batch_size * 2m
                 d_s_concat = tf.concat([decoder_s_state[-1].h, decoder_s_state[-1].c], axis = 1)
@@ -120,7 +109,7 @@ class DARNN():
                 l_ks = []
                 for i in range(config.timestep):
                     l_k = ds_part + tf.matmul(X_encodeds[t], de_u_e)
-                    l_k = tf.matmul( tf.nn.tanh(l_k), de_v_e)
+                    l_k = tf.matmul(tf.nn.tanh(l_k), de_v_e)
 
                     l_ks.append(l_k)
 
@@ -210,10 +199,3 @@ class DARNN():
             all_loss.append(ls)
 
         return np.mean(all_loss), np.mean(all_perc_loss), np.mean(all_rmse)
-        
-
-
-    
-            
-
-  

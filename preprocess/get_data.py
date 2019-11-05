@@ -84,7 +84,7 @@ class TaxiNYDataset:
         data_list = data_list.transpose( (1, 0, 2))
 
         # swap central row with the last row, use the central row as target series
-        data_list[ [55, -1] ] = data_list[ [-1, 55] ]
+        data_list[ [-50, -1] ] = data_list[ [-1, -50] ]
         
         if config.is_scaled:
             data = data_list.tolist()
